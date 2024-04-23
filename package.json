@@ -1,0 +1,23 @@
+{
+  "name": "ninacarducci.github.io",
+  "version": "1.0.0",
+  "description": "Site de la photographe Nina Carducci proposant ses services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^7.1.0",
+    "css-minimizer-webpack-plugin": "^6.0.0",
+    "mini-css-extract-plugin": "^2.8.1",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "rfs": "^10.0.0"
+  }
+}
