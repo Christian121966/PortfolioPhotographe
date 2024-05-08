@@ -489,6 +489,11 @@ input[type=submit] {
     height: 150px;
   }
 
+  ul.gallery-nav {
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
   
   #services .container {
     align-items: center;
