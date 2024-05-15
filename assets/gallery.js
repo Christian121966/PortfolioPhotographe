@@ -1,65 +1,91 @@
-let currentIndex = 0
-const items = document.querySelectorAll('.carousel-item')
-const totalItems = items.length
-const indicators = document.querySelectorAll('.carousel-indicators button')
 
-function changeItem(index) {
-  const toggleActiveClass = (elements, index) => {
-    elements.forEach((el) => el.classList.remove('active'))
-    elements[index].classList.add('active')
+class Carousel {
+  constructor(selector) {
+    this.carouselElement = document.querySelector(selector);
+    this.items = this.carouselElement.querySelectorAll('.carousel-item');
+    this.totalItems = this.items.length;
+    this.indicators = this.carouselElement.querySelectorAll('.carousel-indicators button');
+    this.currentIndex = 0;
+    this.initControls();
+    this.startAutoRotate();
   }
 
-  toggleActiveClass(items, index)
-  toggleActiveClass(indicators, index)
+  initControls() {
+    this.carouselElement.querySelector('.carousel-control-next').addEventListener('click', () => {
+      this.changeItem((this.currentIndex + 1) % this.totalItems);
+    });
 
-  currentIndex = index
+    this.carouselElement.querySelector('.carousel-control-prev').addEventListener('click', () => {
+      this.changeItem((this.currentIndex - 1 + this.totalItems) % this.totalItems);
+    });
+
+    this.indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => this.changeItem(index));
+    });
+  }
+
+  changeItem(newIndex) {
+    this.items.forEach((item) => item.classList.remove('active'));
+    this.indicators.forEach((indicator) => indicator.classList.remove('active'));
+
+    this.items[newIndex].classList.add('active');
+    this.indicators[newIndex].classList.add('active');
+    this.currentIndex = newIndex;
+  }
+
+  startAutoRotate() {
+    setInterval(() => {
+      this.changeItem((this.currentIndex + 1) % this.totalItems);
+    }, 5000);
+  }
 }
 
-function initCarouselControls() {
-  document
-    .querySelector('.carousel-control-next')
-    .addEventListener('click', () => {
-      changeItem((currentIndex + 1) % totalItems)
-    })
+class GalleryFilters {
+  constructor(selector) {
+    this.galleryElement = document.querySelector(selector);
+    this.buttons = this.galleryElement.querySelectorAll('.gallery-button');
+    this.pictures = this.galleryElement.querySelectorAll('.picture-item');
+    this.initFilters();
+  }
 
-  document
-    .querySelector('.carousel-control-prev')
-    .addEventListener('click', () => {
-      changeItem((currentIndex - 1 + totalItems) % totalItems)
-    })
+  initFilters() {
+    this.buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-filter');
+        this.applyFilter(filter, button);
+      });
+    });
+  }
 
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => changeItem(index))
-  })
-}
+  applyFilter(filter, selectedButton) {
+    this.buttons.forEach((btn) => btn.classList.remove('selected-filter'));
+    selectedButton.classList.add('selected-filter');
 
-function initGalleryFilters() {
-  const buttons = document.querySelectorAll('.gallery-button')
-  const pictures = document.querySelectorAll('.picture-item')
-
-  buttons.forEach((button) => {
-    button.addEventListener('click', function () {
-      const filter = this.getAttribute('data-filter')
-
-      buttons.forEach((btn) => btn.classList.remove('selected-filter'))
-      this.classList.add('selected-filter')
-
-      pictures.forEach((picture) => {
-        picture.style.display =
-          filter === 'tous' ||
-          picture.querySelector('img').dataset.galleryTag.includes(filter)
-            ? 'block'
-            : 'none'
-      })
-    })
-  })
+    this.pictures.forEach((picture) => {
+      picture.style.display = filter === 'tous' || picture.querySelector('img').dataset.galleryTag.includes(filter) ? 'block' : 'none';
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initCarouselControls()
-  initGalleryFilters()
+  const carousel = new Carousel('.carousel');
+  const galleryFilters = new GalleryFilters('.gallery');
 
-  setInterval(() => {
-    changeItem((currentIndex + 1) % totalItems)
-  }, 5000)
-})
+  
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          observer.unobserve(img);
+        }
+      });
+    });
+
+    document.querySelectorAll('img[data-src]').forEach((img) => {
+      observer.observe(img);
+    });
+  }
+});
+
