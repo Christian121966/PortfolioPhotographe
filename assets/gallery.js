@@ -24,68 +24,89 @@ class Carousel {
     });
   }
 
-  changeItem(newIndex) {
-    this.items.forEach((item) => item.classList.remove('active'));
-    this.indicators.forEach((indicator) => indicator.classList.remove('active'));
-
-    this.items[newIndex].classList.add('active');
-    this.indicators[newIndex].classList.add('active');
-    this.currentIndex = newIndex;
-  }
-
-  startAutoRotate() {
-    setInterval(() => {
-      this.changeItem((this.currentIndex + 1) % this.totalItems);
-    }, 5000);
-  }
-}
-
-class GalleryFilters {
-  constructor(selector) {
-    this.galleryElement = document.querySelector(selector);
-    this.buttons = this.galleryElement.querySelectorAll('.gallery-button');
-    this.pictures = this.galleryElement.querySelectorAll('.picture-item');
-    this.initFilters();
-  }
-
-  initFilters() {
-    this.buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const filter = button.getAttribute('data-filter');
-        this.applyFilter(filter, button);
-      });
-    });
-  }
-
-  applyFilter(filter, selectedButton) {
-    this.buttons.forEach((btn) => btn.classList.remove('selected-filter'));
-    selectedButton.classList.add('selected-filter');
-
-    this.pictures.forEach((picture) => {
-      picture.style.display = filter === 'tous' || picture.querySelector('img').dataset.galleryTag.includes(filter) ? 'block' : 'none';
-    });
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const carousel = new Carousel('.carousel');
-  const galleryFilters = new GalleryFilters('.gallery');
-
+  /**
+   * Represents a gallery filter functionality to filter gallery items based on user selection and display images in a modal view.
+   */
+  // class GalleryFilters {
+      /**
+       * Initializes the GalleryFilters class with the provided selector.
+       * @param {string} selector - The selector for the gallery container.
+       */
+      constructor(selector) {
+        this.galleryElement = document.querySelector(selector);
+        this.buttons = this.galleryElement.querySelectorAll('.gallery-button');
+        this.pictures = this.galleryElement.querySelectorAll('.picture-item');
+        this.modal = document.querySelector("#modal-picture");
+        this.modalImage = this.modal.querySelector(".modal-picture img");
+        this.modalClose = this.modal.querySelector(".close-modal");
+        this.initFilters();
+        this.setupModal();
+      }
   
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src;
-          observer.unobserve(img);
-        }
-      });
-    });
-
-    document.querySelectorAll('img[data-src]').forEach((img) => {
-      observer.observe(img);
-    });
-  }
-});
-
+      /**
+       * Sets up event listeners on filter buttons to apply filters.
+       */
+      initFilters() {
+        this.buttons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const filter = button.getAttribute('data-filter');
+            this.applyFilter(filter, button);
+          });
+        });
+      }
+  
+      /**
+       * Applies the selected filter to gallery items and updates the UI.
+       * @param {string} filter - The filter to be applied.
+       * @param {Element} selectedButton - The selected filter button element.
+       */
+      applyFilter(filter, selectedButton) {
+        this.buttons.forEach((btn) => btn.classList.remove('selected-filter'));
+        selectedButton.classList.add('selected-filter');
+  
+        this.pictures.forEach((picture) => {
+          picture.style.display = filter === 'tous' || picture.querySelector('img').dataset.galleryTag.includes(filter) ? 'block' : 'none';
+        });
+      }
+  
+      /**
+       * Configures event listeners for opening and closing the modal.
+       */
+      setupModal() {
+        this.pictures.forEach(picture => {
+          picture.addEventListener('click', () => {
+            this.openModal(picture);
+          });
+        });
+  
+        this.modalClose.addEventListener('click', () => {
+          this.closeModal();
+        });
+  
+        this.modal.addEventListener('click', (event) => {
+          if (event.target === this.modal) {
+            this.closeModal();
+          }
+        });
+      }
+  
+      /**
+       * Displays the modal with the selected picture.
+       * @param {Element} picture - The selected picture element.
+       */
+      openModal(picture) {
+        const img = picture.querySelector('img');
+        this.modalImage.src = img.src;
+        this.modalImage.alt = img.alt;
+        this.modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+  
+      /**
+       * Hides the modal and restores page scrollability.
+       */
+      closeModal() {
+        this.modal.style.display = "none";
+        document.body.style.overflow = "auto";
+      }
+    }
