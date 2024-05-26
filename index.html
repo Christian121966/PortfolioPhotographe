@@ -67,7 +67,9 @@
     />
     <link rel="stylesheet" href="./assets/style.css" />
     <script src="./assets/bootstrap/bootstrap.bundle.min.js" defer></script>
-    <script src="./assets/gallery.js" defer></script>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>-->
+    <script src="./assets/main.js" type="module" defer></script>
+    <!--<script src="./assets/main.js" defer></script>-->
     <script type="application/ld+json">
     <link rel="preload" href="./assets/images/slider/ryoji-iwata.webp" as="image">
     <link rel="preload" href="./assets/images/nina320.webp" as="image">
@@ -340,7 +342,7 @@
 					class="d-block w-100"
 					loading="lazy"
 					data-index="0"
-					data-gallery-tag="concerts, tous"
+					data-gallery-tag="concert, tous"
           width="440px"
           height="440px"
 				/>
@@ -409,7 +411,7 @@
 					class="d-block w-100"
 					loading="lazy"
 					data-index="3"
-					data-gallery-tag="concerts, tous"
+					data-gallery-tag="concert, tous"
           width="440px"
           height="440px"
 				/>
@@ -501,7 +503,7 @@
 					class="d-block w-100"
 					loading="lazy"
 					data-index="7"
-					data-gallery-tag="portraits, tous"
+					data-gallery-tag="portrait, tous"
           width="440px"
           height="440px"
 				/>
@@ -524,11 +526,30 @@
 					class="d-block w-100"
 					loading="lazy"
 					data-index="8"
-					data-gallery-tag="portraits, tous"
+					data-gallery-tag="portrait, tous"
           width="440px"
           height="440px"
 				/>
 			</picture>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal-picture" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="modal-picture"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-arrow-left" aria-label="Previous Image">&lt;</button>
+                <button type="button" class="btn btn-secondary modal-arrow-right" aria-label="Next Image">&gt;</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="quote">
