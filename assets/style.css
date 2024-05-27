@@ -224,19 +224,6 @@ img.d-block.w-100 {
   cursor: pointer;
 }
 
-/* style.css */
-/*.gallery-open {
-  animation: fadeIn 3s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-  }
-  to {
-      opacity: 1;
-  }
-}*/
 
 .gallery-open {
   animation: .5s ease-in-out openGallery;
@@ -381,6 +368,126 @@ input[type=submit] {
   background-color: #BEB45A;
   padding: 0.5em 1em;
 }
+
+/*modal-gallery*/
+/* Style général de la modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* caché par défaut */
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 1050; /* S'assure que la modal est au-dessus des autres éléments */
+  animation: .5s ease-in-out openModal; 
+}
+
+@keyframes openModal {
+  0% {
+      transform: scale(0);
+      transform-origin: top left;
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  max-width: 600px; /* Largeur maximale de la modal */
+  margin: 0.5rem;
+  pointer-events: none;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto; /* Permet les interactions avec le contenu */
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+}
+
+.modal-header, .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.close {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-shadow: none;
+  opacity: 0.5;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close:hover {
+  opacity: 0.75;
+}
+
+.modal-arrow-left, .modal-arrow-right {
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0 1rem;
+}
+
+.modal-arrow-left:hover, .modal-arrow-right:hover {
+  color: #000;
+}
+
+/* Animation pour l'apparition de la modal */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translateY(-100px);
+}
+
+.modal.fade.show .modal-dialog {
+  transform: translateY(0);
+}
+
+.fade {
+  transition: opacity 0.3s ease-in-out; 
+
+  &:not(.show) {
+    opacity: 0;
+  }
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+
 
 @media all and (max-width: 1180px) {
   .picture {
